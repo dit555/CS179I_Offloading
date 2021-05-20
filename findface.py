@@ -3,39 +3,6 @@ import sys
 import logging as log
 import datetime as dt
 from time import sleep
-import os.path
-from os import path
-
-
-#find most recent image file if one is avalible
-last_good = 0 #latest index we found
-num = 0 #cur index
-max_it = 5 #how many times we allow loop in findRecent() to run after not finding any new 
-def findRecent():
-	r = True
-	name = ""
-	good = ""
-	num = last_good
-	it = 0 #how many times we have ran since we found a file
-	while r:
-		name = "Result"
-		name += str(num)
-		name += ".jpg"
-		#print("checking for:", name) 
-		if(path.exists(name)):
-			#print(name, "found:")
-			good = name
-			it = 0
-		else:
-			#print(name, "!!!NOT found:")
-			it += 1
-			if (it >= max_it):
-				r = False
-				if good == "":
-					return "BAD"
-		num += 1
-	return good
-
 
 cascPath = "data.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
