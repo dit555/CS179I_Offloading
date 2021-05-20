@@ -31,6 +31,8 @@ def findRecent():
 			it += 1
 			if (it >= max_it):
 				r = False
+				if good == "":
+					return "BAD"
 		num += 1
 	return good
 
