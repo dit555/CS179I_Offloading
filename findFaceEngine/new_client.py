@@ -5,7 +5,7 @@ import struct
 import pickle
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(('128.110.155.82', 8485))
+client_socket.connect(('130.127.134.19', 8485))
 #client_socket.connect(('localhost', 8486))
 connection = client_socket.makefile('wb')
 

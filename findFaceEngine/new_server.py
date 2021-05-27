@@ -2,7 +2,8 @@ import cv2
 import pickle
 import struct
 import os
-HOST = '128.110.155.82'
+import socket
+HOST = '130.127.134.19'
 PORT = 8485
 
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -14,7 +15,7 @@ s.listen(10)
 print('Socket now listening')
 
 conn, addr = s.accept()
-dirName = '/users/Kirbmoo/data'  # create a directory to store images
+dirName = '/users/dit55/data'  # create a directory to store images
 try:
     os.mkdir(dirName)  # Create target Directory
 except FileExistsError:
