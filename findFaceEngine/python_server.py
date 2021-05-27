@@ -2,7 +2,7 @@
 
 import socket, os
 
-HOST = '76.82.39.133'  # Standard loopback interface address (localhost)
+HOST = '198.72.184.1'  # Standard loopback interface address (localhost)
 PORT = 65431        # Port to listen on (non-privileged ports are > 1023)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
