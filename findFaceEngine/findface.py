@@ -2,7 +2,8 @@ import cv2
 import logging as log
 import datetime as dt
 from os import path
-from time import sleep
+import time
+import numpy as np
 import os.path
 
 cascPath = "data.xml"
@@ -11,9 +12,6 @@ faceCascade = cv2.CascadeClassifier(cascPath)
 
 #video_capture = cv2.VideoCapture(0)
 anterior = 0
-
-#image overlay
-overlay = cv2.imread('me_gusta_filter.jpg')
 
 # find most recent image file if one is avalible
 last_good = 0  # latest index we found
@@ -49,11 +47,15 @@ def findRecent():
 
 
 num_o = 0 #number appended to overlay image name
-while True:
+for i in range(1,1000):
 
     # Read frames
     name = findRecent()
-    
+    #calculate run speed
+    fps = []
+    start = time.time()
+
+    #check if there is a recent file
     if name != "BAD":
         
         frame = cv2.imread(name)
@@ -74,16 +76,9 @@ while True:
     )
 
     # Draw a rectangle around the faces
-    for (x, y, w, h) in faces:
-        print("center at X: ", x + w, "Y: ", y + h)
-        #added_image = cv2.addWeighted(frame,0.4,overlay,0.1,0)
-
-    #overlay image
-    temp = "to_send/combined"
-    temp += str(num_o)
-    temp += ".png"
-    num_o += 1
-    #cv2.imwrite('to_send/combined.png', added_image)        
+    #for (x, y, w, h) in faces:
+        #print("center at X: ", x + w, "Y: ", y + h)
+    
 
     if anterior != len(faces):
         anterior = len(faces)
@@ -92,14 +87,20 @@ while True:
     # Display the resulting frame
     # cv2.imshow('Video', frame)
 
+    
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+    #print fps
+    end = time.time()
+    f = 1 /(end - start)
+    fps.append(f)
+    print("fps: ", f)
 
 # Display the resulting frame
 # cv2.imshow('Video', frame)
 
 # When everything is done, release the capture
 # video_capture.release()
-cv2.destroyAllWindows()
-
+#cv2.destroyAllWindows()
+print("average fps:", np.mean(fps))
 
