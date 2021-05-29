@@ -5,12 +5,19 @@ import pickle
 import struct
 import os
 
+<<<<<<< HEAD
+BUFFER_SIZE = 4096
+SEPARATOR = "<SEPARATOR>"
+HOST = "130.127.134.19"
+PORT = 65432
+=======
 #HOST = ''
 PORT = 8486
 HOST = '130.127.134.18'  # The server's hostname or IP address
 
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 print('Socket created')
+>>>>>>> e26ccf5d9d3e25180402aa54b5e03cef773f2040
 
 s.bind((HOST, PORT))
 print('Socket bind complete')
