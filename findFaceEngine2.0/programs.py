@@ -1,3 +1,4 @@
 #!/bin/bash
-  
-python3 new_server.py & python3 findface.py
+rm -rf data
+rm -rf storageData
+python3 server.py & python3 findface.py

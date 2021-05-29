@@ -1,30 +1,67 @@
 #!/usr/bin/env python3
+import cv2
 import socket
-import os
-import time
+import struct
+import pickle
+from os import path
 
-SEPARATOR = "<SEPARATOR>"
-BUFFER_SIZE = 4096
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket.connect(('130.127.134.18', 8486))
+#client_socket.connect(('localhost', 8486))
+connection = client_socket.makefile('wb')
 
-HOST = '130.127.134.17'  # The server's hostname or IP address
-PORT = 65432        # The port used by the server
+img_counter = 0
 
-filename = "positions.txt"
-old_size = 0
-pos = 0
+last_good = 0  # latest index we found
+num = 0  # cur index
+max_it = 5
+encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+def findRecent():
+    r = True
+    name = ""
+    good = ""
+    num = last_good
+    it = 0  # how many times we have ran since we found a file
+    while r:
+        name = "/users/dit55/CS179I_Offloading/findFaceEngine2.0/storageData/Result"
+        name += str(num)
+        name += ".jpg"
+        # print("checking for:", name)
+        if path.exists(name):
+            # print(name, "found:")
+            good = name
+            it = 0
+        else:
+            # print(name, "!!!NOT found:")
+            it += 1
+            if it >= max_it:
+                r = False
+                if good == "":
+                    return "BAD"
+        num += 1
+    return good
 
+last_sent = ""
+while True:
+    name = findRecent()
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    while True:
-        new_size = os.stat(filename).st_size
-        if new_size > old_size:
-            with open(filename, "rb") as f:
-                f.seek(pos)
-                for line in f:
-                    s.send(line)
-                pos = f.tell()
-            old_size = new_size
-        time.sleep(1)
+    if name != "BAD" or name != last_sent:
+        frame = cv2.imread(name)
+        last_sent = name
+        # print(name)
+        if frame is None:
+            continue
+    else:
+        #print("no image found")
+        continue
+
+    result, frame = cv2.imencode('.jpg', frame, encode_param)
+    data = pickle.dumps(frame, 0)
+    size = len(data)
+
+    #print("{}: {}".format(img_counter, size))
+    client_socket.sendall(struct.pack(">L", size) + data)
+    img_counter += 1
+
 
 
