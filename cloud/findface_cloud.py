@@ -27,7 +27,7 @@ def findRecent():
     num = last_good
     it = 0  # how many times we have ran since we found a file
     while r:
-        name = "/users/dit55/CS179I_Offloading/findFaceEngine2.0/data/Result"
+        name = "/users/dit55/CS179I_Offloading/findFaceEngine2.0/data/Result" #file path
         name += str(num)
         name += ".jpg"
         # print("checking for:", name)
